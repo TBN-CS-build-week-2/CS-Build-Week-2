@@ -5,6 +5,7 @@ import Login from './components/Login.js';
 import Adventure from './components/Adventure.js';
 
 function App() {
+  // localStorage.removeItem('key');
   const [logedIn, setLogedIn] = useState(!!localStorage.getItem("key"))
   const [backendUrl] = useState('https://lambda-treasure-hunt.herokuapp.com')
 
@@ -26,7 +27,7 @@ function App() {
 
   return (
     <div className="App">
-      {logedIn ? <Adventure logedIn={logedIn} backendUrl={backendUrl} /> : <Login setLocalKey={setLocalKey} />}
+      {logedIn ? <Adventure logedIn={logedIn} backendUrl={backendUrl} setLocalKey={setLocalKey} /> : <Login setLocalKey={setLocalKey} />}
     </div>
   );
 }

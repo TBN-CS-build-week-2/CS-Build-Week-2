@@ -23,8 +23,13 @@ function Adventure(props) {
 
     return (
         <div className='adventure'>
-            {/* {currInfo && currInfo}
-            {currMap && currMap} */}
+            <button onClick={(e) => {
+                e.preventDefault()
+                props.setLocalKey();
+                localStorage.removeItem('key')
+            }}>Logout</button>
+            <p>adventure</p>
+
         </div>
     )
 
