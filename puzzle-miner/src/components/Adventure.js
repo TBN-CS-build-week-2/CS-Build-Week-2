@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Map from "./Map"
 
 function Adventure(props) {
     const [currMap, setMap] = useState({})
@@ -28,7 +29,10 @@ function Adventure(props) {
                 props.setLocalKey();
                 localStorage.removeItem('key')
             }}>Logout</button>
+
             <p>adventure</p>
+            
+            <Map></Map>
 
         </div>
     )
