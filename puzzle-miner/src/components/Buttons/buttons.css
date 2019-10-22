@@ -1,0 +1,35 @@
+.frame {
+  display: flex;
+  justify-content: flex-end;
+  width: 450px;
+  height: 450px;
+  position: relative;
+  margin: auto;
+  float: right;
+}
+
+.frame div {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+}
+
+.north {
+  left: 150px;
+  top: 0;
+}
+
+.south {
+  left: 150px;
+  bottom: 0;
+}
+
+.east {
+  right: 0px;
+  top: 150px;
+}
+
+.west {
+  left: 0px;
+  top: 150px;
+}
