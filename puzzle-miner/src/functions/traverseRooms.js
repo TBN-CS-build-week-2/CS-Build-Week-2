@@ -62,10 +62,65 @@ function traverse(room, currentRooms) {
         } else {
             // run a search to return to the nearest room with an unexplored direction
 
-            //finish rest of while loop functiuonality
+            let stack = []
+            let visited_search = new Set()
+            stack.push([roomId])
+            let found = 0
+            let foundPath = []
+
+            while (stack.length > 0 && found === 0) {
+                let reverseTraversal = []
+                let path = stack.pop()
+                let node = path[path.length - 1]
+                let searchRoom = visited[node]
+                if (!(node in visited_search)) {
+                    visited_search.add(node)
+                }
+
+                for (let direction in searchRoom) {
+                    if (searchRoom[direction] === '?') {
+                        foundPath = path
+                        found += 1
+                    }
+                }
+                if (found > 0) {
+                    break;
+                }
+
+                let exploredDirections = []
+                for (let direction in searchRoom) {
+
+                    if (searchRoom[direction] !== '?') {
+                        let value = searchRoom[direction]
+                        if (!(value in path)) {
+                            exploredDirections.push(direction)
+                        }
+                    }
+                }
+
+                for (let direction in exploredDirections) {
+                    reverseTraversal.push(direction)
+                    new_path = [...path]
+                    new_path.push(searchRoom[direction])
+                    stack.push(new_path)
+                }
+            }
+            let previous = foundPath[0]
+            for (let pathRoom in foundPath) {
+                if (pathRoom != foundPath[0]) {
+                    for (let way in visited[previous]) {
+                        if (visited[previous][way] == pathRoom) {
+                            playerTravel(way)
+                            traversalPath.push(way)
+                        }
+                    }
+                }
+                previous = pathRoom;
+            }
+
         }
     }
-}
+    return traversalPath;
 }
 
 export default traverse;
