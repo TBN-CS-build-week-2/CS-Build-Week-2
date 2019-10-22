@@ -7,7 +7,7 @@ const MapS = styled.div `
     display: flex;
     flex-wrap: wrap;
     width: 80%;
-    margin: 2px;
+    height: 100%
     border: solid 1px blue
 
 `
