@@ -21,3 +21,10 @@
   color: #09d3ac;
 }
 
+.container {
+  display: flex;
+  margin: auto;
+  width: 1800px; /* 1500 px just for the map*/
+  height: 1000px;
+  border: solid 1px black;
+}

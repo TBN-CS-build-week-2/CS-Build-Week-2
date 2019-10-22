@@ -31,8 +31,9 @@ function Adventure(props) {
             }}>Logout</button>
 
             <p>adventure</p>
-            
-            <Map></Map>
+            <div className='container'>
+                <Map></Map>
+            </div>
 
         </div>
     )

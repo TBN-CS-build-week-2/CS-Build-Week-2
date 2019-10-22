@@ -5,8 +5,8 @@ import styled from 'styled-components';
 const RoomContainerS = styled.div `
     display: flex;
     flex-wrap: wrap;
-    width: 1.666666%;
-    height: 1.666666%;
+    width: 24px;
+    height: 16.666666px;
     `
 
 
