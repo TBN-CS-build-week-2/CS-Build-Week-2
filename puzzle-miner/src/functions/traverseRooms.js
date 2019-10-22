@@ -1,5 +1,25 @@
+import axios from 'axios';
 
-function playerTravel() {
+function playerTravel(direction) {
+    setTimeout(() => {
+        const auth = `Token ${localStorage.getItem("key")}`
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': auth
+            },
+            data: {
+                'direction': direction
+            }
+        }
+        console.log('traveled', options)
+        axios
+            .get(`${props.backendUrl}/api/adv/init/`, options)
+            .then(res => {
+                return res.data
+            })
+
+    }, 15000);
 
 }
 
@@ -120,7 +140,7 @@ function traverse(room, currentRooms) {
 
         }
     }
-    return traversalPath;
+    return traversalPath, visited;
 }
 
 export default traverse;
