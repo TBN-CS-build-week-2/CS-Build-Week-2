@@ -97,6 +97,44 @@ function searchRoom(currRoom, targetRoomId) {
     localStorage.setItem('pathToSearch', foundPath)
     console.log('search output _________ --- :', foundPath)
 
+    // function to move character
+    let previous = foundPath[0];
+    let trackIndex = 1;
+    function startBackTrack() {
+        async function backTrack() {
+            if (trackIndex >= foundPath.length) {
+                // trackIndex = 1
+                currRoom.cooldown += currRoom.cooldown
+                console.log('____returnFinish room____', currRoom)
+                return currRoom
+                // return setTimeout(() => roomStep(), currRoom.cooldown * 1000);
+            }
+            let pathRoom = foundPath[trackIndex];
+
+            console.log('end-- pathroom', pathRoom, previous)
+
+            for (let way in visited[previous]['exits']) {
+                console.log('end-- way', way)
+                if (visited[previous]['exits'][way] == pathRoom) {
+                    console.log('way-- selected', way, visited[previous]['exits'])
+                    console.log('currentroomReturn', currRoom)
+                    currRoom = await playerTravel(way)
+                    let pathRoomId = currRoom.room_id
+                    console.log('currentroomReturn2', pathRoomId, currRoom)
+                    break;
+                }
+            }
+            console.log('pathroom', pathRoom)
+            previous = pathRoom;
+            trackIndex += 1
+            setTimeout(() => { backTrack() }, currRoom.cooldown * 1000);
+        }
+
+        return backTrack();
+    }
+
+    startBackTrack();
+
 
 }
 

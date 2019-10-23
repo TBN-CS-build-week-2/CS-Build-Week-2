@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import traverse from '../functions/traverseRooms.js';
 import searchRoom from '../functions/searchRoom.js';
+import Map from "./Map"
+import Inputs from "./Inputs.js";
 
 function Adventure(props) {
     const [searchedRooms, setRooms] = useState({})
-    const [currMap, setMap] = useState({})
+    // const [currMap, setMap] = useState({})
     const [currInfo, setCurrInfo] = useState()
 
     useEffect(() => {
@@ -60,22 +62,13 @@ function Adventure(props) {
                 props.setLocalKey();
                 localStorage.removeItem('key')
             }}>Logout</button>
+
             <p>adventure</p>
-            <button onClick={generateTraversal}>generateTraversal</button>
-            <form>
-                <input
-                    value={userToken}
-                    onChange={handleTokenChange}
-                    name='userToken'
-                />
-                <button onClick={searchForRoom}>generateTraversal</button>
-            </form>
+            <div className='container'>
+                <Inputs currInfo={currInfo} setCurrInfo={setCurrInfo} setRooms={setRooms} searchedRooms={searchedRooms} backendUrl={props.backendUrl} />
+                <Map></Map>
 
-            <div>
-                {searchedRooms[0] && searchedRooms[0].title}
             </div>
-
-
 
         </div>
     )
