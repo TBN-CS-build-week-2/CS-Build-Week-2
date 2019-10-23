@@ -14,7 +14,7 @@ function playerTravel(direction) {
         },
 
     }
-    console.log('traveled', options)
+    console.log('traveled', options, direction)
     return axios
         .post(`${backendUrl}/api/adv/move/`, { 'direction': direction }, options)
         .then(result => {
@@ -45,6 +45,7 @@ function traverse(room, currentRooms) {
     // change to 500
     // while (visited.length !== 50) {
     async function roomStep() {
+        let runBack = 0;
 
         if (visited.length === 15) {
             return
@@ -133,7 +134,8 @@ function traverse(room, currentRooms) {
                     console.log('e******direction---', direction)
                     if (searchRoom[direction] !== '?') {
                         let value = searchRoom[direction]
-                        if (!(value in path)) {
+                        console.log('v and p', value, path)
+                        if (!(path.includes(value))) {
                             exploredDirections.push(direction)
                         }
                     }
@@ -150,29 +152,56 @@ function traverse(room, currentRooms) {
                     stack.push(new_path)
                 }
             }
-            console.log(foundPath)
-            let previous = foundPath[0]
-            for (let pathRoom in foundPath) {
-                pathRoom = foundPath[pathRoom]
-                console.log('end-- pathroom', pathRoom, previous)
-                if (pathRoom != foundPath[0]) {
+            let previous = foundPath[0];
+            let trackIndex = 1;
+            function startBackTrack() {
+                async function backTrack() {
+                    if (trackIndex >= foundPath.length) {
+                        // trackIndex = 1
+                        currRoom.cooldown += currRoom.cooldown
+                        console.log('____returnFinish room____', currRoom)
+                        return currRoom
+                        // return setTimeout(() => roomStep(), currRoom.cooldown * 1000);
+                    }
+                    let pathRoom = foundPath[trackIndex];
+
+                    console.log('end-- pathroom', pathRoom, previous)
+
                     for (let way in visited[previous]['exits']) {
                         console.log('end-- way', way)
-                        if (visited[previous][way] == pathRoom) {
-                            playerTravel(way)
+                        if (visited[previous]['exits'][way] == pathRoom) {
+                            console.log('way-- selected', way, visited[previous]['exits'])
+                            console.log('currentroomReturn', currRoom)
+                            currRoom = await playerTravel(way)
+                            let pathRoomId = currRoom.room_id
+                            console.log('currentroomReturn2', pathRoomId, currRoom)
                             traversalPath.push(way)
+                            break;
                         }
                     }
+                    console.log('pathroom', pathRoom)
+                    previous = pathRoom;
+                    trackIndex += 1
+                    setTimeout(() => { backTrack() }, currRoom.cooldown * 1000);
                 }
-                previous = pathRoom;
+
+                return backTrack();
             }
+            console.log('****----*** foundPath ****----***', foundPath)
+            console.log('visited', visited)
+            await startBackTrack();
+            console.log('return outside finish', currRoom)
+            return
+
 
         }
+        localStorage.setItem('visited', JSON.stringify(visited));
+        currentRooms = visited;
         setTimeout(() => roomStep(), currRoom.cooldown * 1000);
     }
     roomStep()
 
-    return traversalPath, visited;
+    return visited;
 }
 
 export default traverse;
