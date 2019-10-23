@@ -1,10 +1,44 @@
 import axios from 'axios';
 
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+// function playerPickTreasure(room) {
+//     const backendUrl = 'https://lambda-treasure-hunt.herokuapp.com'
+//     let nextRoom = null;
+//     let currItems = room.items
+//     let currTreasure = []
+//     for (let i = 0; i < currItems.length; i++) {
+//         if (currItems[i] === 'tiny treasure' || currItems[i] === 'small treasure') {
+//             currTreasure.push()
+//         }
+//     }
+
+//     console.log('key', localStorage.getItem('key'))
+//     const auth = `Token ${localStorage.getItem("key")}`
+//     const options = {
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': auth
+//         },
+
+//     }
+//     console.log('traveled', options, direction)
+//     return axios
+//         .post(`${backendUrl}/api/adv/take/`, { "name": treasure }, options)
+//         .then(result => {
+//             console.log(result.data)
+//             nextRoom = result.data
+//             console.log('treasure Pick', nextRoom)
+//             return nextRoom
+//         })
+// }
+
 function playerTravel(direction) {
     const backendUrl = 'https://lambda-treasure-hunt.herokuapp.com'
     let nextRoom = null;
-    // setTimeout(() => { }, 15000);
-    // setTimeout(() => null, 15000);
+
     console.log('key', localStorage.getItem('key'))
     const auth = `Token ${localStorage.getItem("key")}`
     const options = {
@@ -28,18 +62,25 @@ function playerTravel(direction) {
 function traverse(room, currentRooms) {
     // console.log(room)
     currentRooms[room.room_id] = room
-    // console.log(currentRooms)
+    let allVisited = JSON.parse(localStorage.getItem('allVisited'))
     // return currentRooms
 
     let traversalPath = []
     let visited = {}
     let currRoom = room
 
-    visited[room.room_id] = { title: currRoom.title, coordinates: currRoom.coordinates }
-    visited[room.room_id]['exits'] = {}
-    for (let i = 0; i < room.exits.length; i++) {
-        visited[room.room_id]['exits'][room.exits[i]] = '?'
+    if (allVisited) {
+        visited = allVisited
     }
+    if (!(room.room_id in visited)) {
+        visited[room.room_id] = { title: currRoom.title, coordinates: currRoom.coordinates }
+        visited[room.room_id]['exits'] = {}
+        for (let i = 0; i < room.exits.length; i++) {
+            visited[room.room_id]['exits'][room.exits[i]] = '?'
+        }
+    }
+
+
 
     // loop until all rooms have been explored (all rooms added to visited)
     // change to 500
@@ -47,7 +88,7 @@ function traverse(room, currentRooms) {
     async function roomStep() {
         let runBack = 0;
 
-        if (visited.length === 15) {
+        if (visited.length === 499) {
             return
         }
 
@@ -190,12 +231,24 @@ function traverse(room, currentRooms) {
             console.log('****----*** foundPath ****----***', foundPath)
             console.log('visited', visited)
             await startBackTrack();
+            await sleep((currRoom.cooldown * (foundPath.length - 1)) * 1000)
             console.log('return outside finish', currRoom)
-            return
+            // })
+
+            // return
 
 
         }
         localStorage.setItem('visited', JSON.stringify(visited));
+
+        let visitSize = Object.keys(visited).length
+        let allSize = Object.keys(JSON.parse(localStorage.getItem('allVisited'))).length
+        // console.log('sizes --- --- ---', visitSize, allSize)
+        if (visitSize > allSize) {
+            localStorage.setItem('allVisited', JSON.stringify(visited))
+            allVisited = visited
+        }
+
         currentRooms = visited;
         setTimeout(() => roomStep(), currRoom.cooldown * 1000);
     }
