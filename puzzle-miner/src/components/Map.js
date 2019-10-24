@@ -12,18 +12,26 @@ const MapS = styled.div `
 
 `
 
-const createRooms = (startX, startY, endX, endY, properties) => {
+const createRooms = (startX, startY, endX, endY, props) => {
     const rooms = [];
+    
     for(let y=startY; y < endY; y++) {
         for(let x=startX; x < endX; x++) {
-            let roomId = Object.keys(properties.rooms).find(key=> properties.rooms[key].coordinates == `(${x},${y})`)
-                // console.log('roomID: ',roomId)
-                // console.log(`(x,y): ${x}, ${y}`)
 
-            if(roomId)
-                rooms.push(<Room key={[x,y]} room={true }></Room>)
-            else
-                rooms.push(<Room key={[x,y]} room={false}></Room>)
+            let south, east = false
+            //matches room coordinates with the grid
+            let roomId = Object.keys(props.rooms).find(key=> props.rooms[key].coordinates == `(${x},${y})`)
+        
+            if(roomId) {
+                if('s' in props.rooms[roomId].exits)
+                    south = true;
+                if('e' in props.rooms[roomId].exits)
+                    east = true;
+                rooms.push(<Room key={[x,y]} room={true } east={east} south={south}></Room>)
+            }
+            else {
+                rooms.push(<Room key={[x,y]} room={false} south={south} south={south}></Room>)
+            }
         }
 
     }

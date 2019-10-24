@@ -26,6 +26,12 @@ const ConnectHorS = styled.div `
     height: 20%;
     margin-top: 20%;
     border: 1px solid orange;
+
+    ${
+        ({active}) => !active && `
+        visibility: hidden
+           `
+    }
 `
 
 const ConnectVerS = styled.div `
@@ -33,6 +39,12 @@ const ConnectVerS = styled.div `
     height: 20%;
     margin-left: 33%;
     border: 1px solid orange
+
+    ${
+        ({active}) => !active && `
+            visibility: hidden
+        `
+    }
 `
 
 const me = styled.div `
@@ -56,9 +68,9 @@ const  Room = (props) => {
                     } */}
                 </RoomS>
 
-                <ConnectHorS></ConnectHorS>
+                <ConnectHorS active={props.east}></ConnectHorS>
 
-                <ConnectVerS></ConnectVerS>
+                <ConnectVerS active={props.south}></ConnectVerS>
 
             </RoomContainerS>
     )
