@@ -8,9 +8,22 @@ function Inputs(props) {
 
 
     function generateTraversal() {
-        if (props.currInfo && props.currInfo.title) {
-            props.setRooms(traverse(props.currInfo, props.searchedRooms))
+
+        const auth = `Token ${localStorage.getItem("key")}`
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': auth
+            }
         }
+
+        axios
+            .get(`${props.backendUrl}/api/adv/init/`, options)
+            .then(res => {
+                props.setCurrInfo(res.data)
+                props.setRooms(traverse(res.data, props.searchedRooms))
+            })
+
     }
 
     function handleSearchInput(e) {
@@ -38,9 +51,29 @@ function Inputs(props) {
 
     }
 
+    function pray() {
+        // e.preventDefault();
+        const auth = `Token ${localStorage.getItem("key")}`
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': auth
+            }
+        }
+        // console.log(options)
+        axios
+            .post(`${props.backendUrl}/api/adv/pray/`, {}, options)
+            .then(res => {
+                console.log(res.data)
+                // props.setCurrInfo(res.data)
+
+            })
+
+    }
+
 
     return (
-        <>
+        <div>
             <button onClick={generateTraversal}>generateTraversal</button>
             <form onSubmit={searchForRoom}>
                 <input
@@ -50,7 +83,8 @@ function Inputs(props) {
                 />
                 <button type='Submit'>Search</button>
             </form>
-        </>
+            <button onClick={pray}>pray</button>
+        </div>
     )
 
 }
