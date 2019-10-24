@@ -26,28 +26,6 @@ function Adventure(props) {
             })
     }, [props.logedIn, props.backendUrl])
 
-    function generateTraversal() {
-        if (currInfo && currInfo.title) {
-            setRooms(traverse(currInfo, searchedRooms))
-        }
-    }
-
-    function searchForRoom(targetId) {
-        const auth = `Token ${localStorage.getItem("key")}`
-        const options = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': auth
-            }
-        }
-        // console.log(options)
-        axios
-            .get(`${props.backendUrl}/api/adv/init/`, options)
-            .then(res => {
-                setCurrInfo(res.data)
-                searchRoom(res.data, targetId)
-            })
-    }
 
     // console.log(searchedRooms)
     console.log(currInfo)
