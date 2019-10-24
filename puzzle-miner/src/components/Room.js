@@ -12,20 +12,27 @@ const RoomContainerS = styled.div `
             visibility:hidden;
         `}
 
-    `
+        
 
+    `
 
 const RoomS = styled.div `
     width: 80%;
     height: 80%
     border: 1px solid black;
+    ${
+    
+    ({special}) => special && `
+        border: 2px solid green;
+    `
+    }
 `
 
 const ConnectHorS = styled.div `
     width: 20%;
     height: 20%;
     margin-top: 20%;
-    border: 1px solid orange;
+    background: purple;
 
     ${
         ({active}) => !active && `
@@ -38,7 +45,7 @@ const ConnectVerS = styled.div `
     width: 20%;
     height: 20%;
     margin-left: 33%;
-    border: 1px solid orange
+    background: purple
 
     ${
         ({active}) => !active && `
@@ -46,26 +53,28 @@ const ConnectVerS = styled.div `
         `
     }
 `
-
-const me = styled.div `
-    width: 15px;
-    height: 15px;
+const Me = styled.div `
+    width: 14px;
+    height: 14px;
+    ${'' /* margin-top: 1px; */}
     border-radius: 50%;
     background: red;
     display: inline-block;
 `
 
 const  Room = (props) => {
+    // console.log('current Info: ', Object.keys(props.currInfo))
+    // console.log(props.room)
 
-    console.log(props)
     return (
-            <RoomContainerS active={props.room}>
+            <RoomContainerS active={props.room} >
                     
-                <RoomS>
-                    {/* {
-                        this.state.isCurrentRoom && 
-                        <me></me>
-                    } */}
+                <RoomS special={props.room.title != "A misty room"}>
+                    {
+                        props.room && props.currInfo &&
+                        props.room.coordinates == props.currInfo[Object.keys(props.currInfo)[0]].coordinates && 
+                        <Me></Me>
+                    }
                 </RoomS>
 
                 <ConnectHorS active={props.east}></ConnectHorS>

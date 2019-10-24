@@ -1179,26 +1179,39 @@ const data = {
     }
 }
 
+const starting_room = {
+    "0": {
+        "title": "A brightly lit room",
+        "coordinates": "(60,60)",
+        "exits": {
+            "n": 10,
+            "s": "?",
+            "e": 4,
+            "w": 1
+        }
+    },
+}
+
 function Adventure(props) {
     const [searchedRooms, setRooms] = useState(data)
     // const [currMap, setMap] = useState({})
-    const [currInfo, setCurrInfo] = useState()
+    const [currInfo, setCurrInfo] = useState(starting_room)
 
-    useEffect(() => {
-        const auth = `Token ${localStorage.getItem("key")}`
-        const options = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': auth
-            }
-        }
-        // console.log(options)
-        axios
-            .get(`${props.backendUrl}/api/adv/init/`, options)
-            .then(res => {
-                setCurrInfo(res.data)
-            })
-    }, [props.logedIn, props.backendUrl])
+    // useEffect(() => {
+    //     const auth = `Token ${localStorage.getItem("key")}`
+    //     const options = {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': auth
+    //         }
+    //     }
+    //     // console.log(options)
+    //     axios
+    //         .get(`${props.backendUrl}/api/adv/init/`, options)
+    //         .then(res => {
+    //             setCurrInfo(res.data)
+    //         })
+    // }, [props.logedIn, props.backendUrl])
 
     function generateTraversal() {
         if (currInfo && currInfo.title) {
@@ -1224,7 +1237,7 @@ function Adventure(props) {
     }
 
     // console.log(searchedRooms)
-    // console.log(currInfo)
+    console.log(currInfo)
 
 
     // console.log(searchedRooms)
@@ -1240,7 +1253,7 @@ function Adventure(props) {
             <p>adventure</p>
             <div className='container'>
                 <Inputs currInfo={currInfo} setCurrInfo={setCurrInfo} setRooms={setRooms} searchedRooms={searchedRooms} backendUrl={props.backendUrl} />
-                <Map rooms={searchedRooms}></Map>
+                <Map rooms={searchedRooms} currInfo={currInfo}></Map>
 
             </div>
 

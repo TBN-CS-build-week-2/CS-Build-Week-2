@@ -14,7 +14,7 @@ const MapS = styled.div `
 
 const createRooms = (startX, startY, endX, endY, props) => {
     const rooms = [];
-    
+    console.log(props.rooms)
     for(let y=startY; y < endY; y++) {
         for(let x=startX; x < endX; x++) {
 
@@ -27,10 +27,10 @@ const createRooms = (startX, startY, endX, endY, props) => {
                     south = true;
                 if('e' in props.rooms[roomId].exits)
                     east = true;
-                rooms.push(<Room key={[x,y]} room={true } east={east} south={south}></Room>)
+                rooms.push(<Room key={[x,y]} room={props.rooms[roomId]} currInfo={props.currInfo} east={east} south={south}></Room>)
             }
             else {
-                rooms.push(<Room key={[x,y]} room={false} south={south} south={south}></Room>)
+                rooms.push(<Room key={[x,y]} room={false} currInfo={props.currInfo} south={south} south={south}></Room>)
             }
         }
 
