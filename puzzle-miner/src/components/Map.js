@@ -12,25 +12,29 @@ const MapS = styled.div `
 
 `
 
-const createRooms = (startX, startY, endX, endY) => {
+const createRooms = (startX, startY, endX, endY, properties) => {
     const rooms = [];
     for(let y=startY; y < endY; y++) {
         for(let x=startX; x < endX; x++) {
-            rooms.push(<Room key={[x,y]}></Room>)
+            let roomId = Object.keys(properties.rooms).find(key=> properties.rooms[key].coordinates == `(${x},${y})`)
+                // console.log('roomID: ',roomId)
+                // console.log(`(x,y): ${x}, ${y}`)
+
+            if(roomId)
+                rooms.push(<Room key={[x,y]} room={true }></Room>)
+            else
+                rooms.push(<Room key={[x,y]} room={false}></Room>)
         }
 
     }
     return rooms;
 }
 
-//According to help desk x < 73 and y < 50
-
-
 const Map = (props) => {
 
     return (
         <MapS>
-            {createRooms(20, 20, 80, 80)} 
+            {createRooms(40, 40, 80, 80, props)} 
         </MapS>
     )
 }

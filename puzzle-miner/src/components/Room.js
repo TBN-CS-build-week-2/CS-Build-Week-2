@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 
 const RoomContainerS = styled.div `
-    display: flex;
+    display: flex
     flex-wrap: wrap;
-    width: 23.9px;  /* 1440/nbr of rooms in row */
-    height: 16.66666666666px; /* 1000/nbr of rooms in column */
+    width: 35.9px;  /* 1440/nbr of rooms in row */
+    height: 25px; /* 1000/nbr of rooms in column */
     ${
-        ({active}) => active && `
-            background: yellow;
+        ({active}) => !active && `
+            visibility:hidden;
         `}
 
     `
@@ -43,38 +43,26 @@ const me = styled.div `
     display: inline-block;
 `
 
-class Room extends React.Component {
-    state = {
-        id:'',
-        title:'',
-        description: '',
-        players: [],
-        items: [],
-        exits: [],
-        cooldown: 0.0,
-        errors: [],
-        messages: [],
-        coord: [],
-    } 
+const  Room = (props) => {
 
-    render() {
-        return (
-                <RoomContainerS>
-                    <RoomS>
-                        
-                    <RoomS>
-                        {
-                            this.state.isCurrentRoom && 
-                            <me></me>
-                        }
-                    </RoomS>
+    console.log(props)
+    return (
+            <RoomContainerS active={props.room}>
+                    
+                <RoomS>
+                    {/* {
+                        this.state.isCurrentRoom && 
+                        <me></me>
+                    } */}
+                </RoomS>
 
-                    </RoomS>
-                    <ConnectHorS></ConnectHorS>
-                    <ConnectVerS></ConnectVerS>
-                </RoomContainerS>
-        )
-    }
+                <ConnectHorS></ConnectHorS>
+
+                <ConnectVerS></ConnectVerS>
+
+            </RoomContainerS>
+    )
+    
 }
 
 export default Room

@@ -155,10 +155,10 @@ function Adventure(props) {
     }
 
     // console.log(searchedRooms)
-    console.log(currInfo)
+    // console.log(currInfo)
 
 
-    console.log(searchedRooms)
+    // console.log(searchedRooms)
 
     return (
         <div className='adventure'>
@@ -171,7 +171,7 @@ function Adventure(props) {
             <p>adventure</p>
             <div className='container'>
                 <Inputs currInfo={currInfo} setCurrInfo={setCurrInfo} setRooms={setRooms} searchedRooms={searchedRooms} backendUrl={props.backendUrl} />
-                <Map></Map>
+                <Map rooms={searchedRooms}></Map>
 
             </div>
 
