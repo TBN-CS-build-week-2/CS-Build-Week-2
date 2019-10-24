@@ -7,6 +7,11 @@ const RoomContainerS = styled.div `
     flex-wrap: wrap;
     width: 23.9px;  /* 1440/nbr of rooms in row */
     height: 16.66666666666px; /* 1000/nbr of rooms in column */
+    ${
+        ({active}) => active && `
+            background: yellow;
+        `}
+
     `
 
 
@@ -28,8 +33,16 @@ const ConnectVerS = styled.div `
     height: 20%;
     margin-left: 33%;
     border: 1px solid orange
-
 `
+
+const me = styled.div `
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: red;
+    display: inline-block;
+`
+
 class Room extends React.Component {
     state = {
         id:'',
@@ -47,7 +60,16 @@ class Room extends React.Component {
     render() {
         return (
                 <RoomContainerS>
-                    <RoomS></RoomS>
+                    <RoomS>
+                        
+                    <RoomS>
+                        {
+                            this.state.isCurrentRoom && 
+                            <me></me>
+                        }
+                    </RoomS>
+
+                    </RoomS>
                     <ConnectHorS></ConnectHorS>
                     <ConnectVerS></ConnectVerS>
                 </RoomContainerS>
