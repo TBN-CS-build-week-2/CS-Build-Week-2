@@ -69,7 +69,7 @@ const  Room = (props) => {
     return (
             <RoomContainerS active={props.room} >
                     
-                <RoomS special={props.room.title != "A misty room"}>
+                <RoomS special={props.room.title && !props.room.title.startsWith('A')}>
                     {
                         props.room && props.currInfo &&
                         props.room.coordinates == props.currInfo[Object.keys(props.currInfo)[0]].coordinates && 
