@@ -62,7 +62,8 @@ function playerTravel(direction) {
 function traverse(room, currentRooms) {
     // console.log(room)
     currentRooms[room.room_id] = room
-    let allVisited = JSON.parse(localStorage.getItem('allVisited'))
+    let allVisited = JSON.parse(localStorage.getItem('visited'))
+    localStorage.setItem('isTraversing', true);
     // return currentRooms
 
     let traversalPath = []
@@ -89,6 +90,10 @@ function traverse(room, currentRooms) {
         let hasBackValue = true;
 
         if (visited.length === 499) {
+            return
+        }
+        if (JSON.parse(localStorage.getItem('isTraversing')) === false) {
+            console.log('**********************************************************************************************************************traversal paused!')
             return
         }
         if (!hasBackValue) {
