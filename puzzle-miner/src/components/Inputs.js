@@ -72,9 +72,11 @@ function Inputs(props) {
     }
 
 
+
+
     return (
         <div>
-            <button onClick={generateTraversal}>generateTraversal</button>
+            <button onClick={generateTraversal}>Generate Traversal</button>
             <form onSubmit={searchForRoom}>
                 <input
                     value={roomIdInput}
