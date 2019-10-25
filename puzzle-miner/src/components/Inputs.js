@@ -71,12 +71,18 @@ function Inputs(props) {
 
     }
 
+    function stopTraversal() {
+        console.log('stopped!')
+        localStorage.setItem('isTraversing', false)
+    }
+
 
 
 
     return (
         <div>
             <button onClick={generateTraversal}>Generate Traversal</button>
+            <button onClick={stopTraversal}>Stop Traversal</button>
             <form onSubmit={searchForRoom}>
                 <input
                     value={roomIdInput}
