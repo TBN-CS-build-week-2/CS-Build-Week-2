@@ -92,6 +92,8 @@ function Inputs(props) {
                 <button type='Submit'>Search</button>
             </form>
             <button onClick={pray}>pray</button>
+            <button onClick={() => localStorage.setItem('visited', JSON.stringify({}))}>empty visited</button>
+            <button onClick={() => localStorage.setItem('visited', localStorage.getItem('allVisited'))}>fill visited</button>
         </div>
     )
 
