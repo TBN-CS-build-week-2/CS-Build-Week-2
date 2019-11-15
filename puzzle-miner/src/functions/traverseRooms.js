@@ -62,7 +62,8 @@ function playerTravel(direction) {
 function traverse(room, currentRooms) {
     // console.log(room)
     currentRooms[room.room_id] = room
-    let allVisited = JSON.parse(localStorage.getItem('allVisited'))
+    let allVisited = JSON.parse(localStorage.getItem('visited'))
+    localStorage.setItem('isTraversing', true);
     // return currentRooms
 
     let traversalPath = []
@@ -86,9 +87,17 @@ function traverse(room, currentRooms) {
     // change to 500
     // while (visited.length !== 50) {
     async function roomStep() {
-        let runBack = 0;
+        let hasBackValue = true;
 
         if (visited.length === 499) {
+            return
+        }
+        if (JSON.parse(localStorage.getItem('isTraversing')) === false) {
+            console.log('**********************************************************************************************************************traversal paused!')
+            return
+        }
+        if (!hasBackValue) {
+            console.log('no undiscoverd directions found. graph must be full')
             return
         }
 
@@ -223,7 +232,7 @@ function traverse(room, currentRooms) {
                     console.log('pathroom', pathRoom)
                     previous = pathRoom;
                     trackIndex += 1
-                    setTimeout(() => { backTrack() }, currRoom.cooldown * 1000);
+                    setTimeout(() => { backTrack() }, (currRoom.cooldown * 1000) + 1);
                 }
 
                 return backTrack();
@@ -231,13 +240,20 @@ function traverse(room, currentRooms) {
             console.log('****----*** foundPath ****----***', foundPath)
             console.log('visited', visited)
             await startBackTrack();
-            await sleep((currRoom.cooldown * (foundPath.length - 1)) * 1000)
+            await sleep((currRoom.cooldown * ((foundPath.length) - 1)) * 1000)
             console.log('return outside finish', currRoom)
             // })
 
             // return
+            if (foundPath.length === 0) {
+                hasBackValue = false;
+            }
 
 
+        }
+        if (!hasBackValue) {
+            console.log('no undiscoverd directions found. graph must be full')
+            return
         }
         localStorage.setItem('visited', JSON.stringify(visited));
 
@@ -250,7 +266,7 @@ function traverse(room, currentRooms) {
         }
 
         currentRooms = visited;
-        setTimeout(() => roomStep(), currRoom.cooldown * 1000);
+        setTimeout(() => roomStep(), (currRoom.cooldown * 1000) + 1);
     }
     roomStep()
 

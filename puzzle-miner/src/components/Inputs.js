@@ -8,9 +8,22 @@ function Inputs(props) {
 
 
     function generateTraversal() {
-        if (props.currInfo && props.currInfo.title) {
-            props.setRooms(traverse(props.currInfo, props.searchedRooms))
+
+        const auth = `Token ${localStorage.getItem("key")}`
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': auth
+            }
         }
+
+        axios
+            .get(`${props.backendUrl}/api/adv/init/`, options)
+            .then(res => {
+                props.setCurrInfo(res.data)
+                props.setRooms(traverse(res.data, props.searchedRooms))
+            })
+
     }
 
     function handleSearchInput(e) {
@@ -38,10 +51,38 @@ function Inputs(props) {
 
     }
 
+    function pray() {
+        // e.preventDefault();
+        const auth = `Token ${localStorage.getItem("key")}`
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': auth
+            }
+        }
+        // console.log(options)
+        axios
+            .post(`${props.backendUrl}/api/adv/pray/`, {}, options)
+            .then(res => {
+                console.log(res.data)
+                // props.setCurrInfo(res.data)
+
+            })
+
+    }
+
+    function stopTraversal() {
+        console.log('stopped!')
+        localStorage.setItem('isTraversing', false)
+    }
+
+
+
 
     return (
-        <>
-            <button onClick={generateTraversal}>generateTraversal</button>
+        <div>
+            <button onClick={generateTraversal}>Generate Traversal</button>
+            <button onClick={stopTraversal}>Stop Traversal</button>
             <form onSubmit={searchForRoom}>
                 <input
                     value={roomIdInput}
@@ -50,7 +91,10 @@ function Inputs(props) {
                 />
                 <button type='Submit'>Search</button>
             </form>
-        </>
+            <button onClick={pray}>pray</button>
+            <button onClick={() => localStorage.setItem('visited', JSON.stringify({}))}>empty visited</button>
+            <button onClick={() => localStorage.setItem('visited', localStorage.getItem('allVisited'))}>fill visited</button>
+        </div>
     )
 
 }

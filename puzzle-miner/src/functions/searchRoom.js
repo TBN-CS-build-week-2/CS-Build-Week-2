@@ -52,7 +52,7 @@ function searchRoom(currRoom, targetRoomId) {
         console.log(searchRoom)
         if (!(node in visited_search)) {
             visited_search.add(node)
-            console.log(visited_search)
+            // console.log(visited_search)
         }
 
         if (node === targetRoomId) {
@@ -60,37 +60,30 @@ function searchRoom(currRoom, targetRoomId) {
             found += 1
         }
 
-        // for (let direction in searchRoom) {
-        //     console.log('-------direction---', direction)
-        //     if (searchRoom[direction] === '?') {
-        //         foundPath = path
-        //         found += 1
-        //     }
-        // }
         if (found > 0) {
             break;
         }
 
         let exploredDirections = []
         for (let direction in searchRoom) {
-            console.log('e******direction---', direction)
+            // console.log('e******direction---', direction)
             if (searchRoom[direction] !== '?') {
                 let value = searchRoom[direction]
-                console.log('v and p', value, path)
+                // console.log('v and p', value, path)
                 if (!(path.includes(value))) {
                     exploredDirections.push(direction)
                 }
             }
         }
-        console.log('explored idrections', exploredDirections)
+        // console.log('explored idrections', exploredDirections)
         for (let direction in exploredDirections) {
             direction = exploredDirections[direction]
-            console.log('direction---------', direction)
+            // console.log('direction---------', direction)
             reverseTraversal.push(direction)
             let new_path = [...path]
-            console.log('serach room direction', direction, searchRoom[direction])
+            // console.log('serach room direction', direction, searchRoom[direction])
             new_path.push(searchRoom[direction])
-            console.log('newpath', new_path)
+            // console.log('newpath', new_path)
             stack.push(new_path)
         }
     }
@@ -105,26 +98,26 @@ function searchRoom(currRoom, targetRoomId) {
             if (trackIndex >= foundPath.length) {
                 // trackIndex = 1
                 currRoom.cooldown += currRoom.cooldown
-                console.log('____returnFinish room____', currRoom)
+                // console.log('____returnFinish room____', currRoom)
                 return currRoom
                 // return setTimeout(() => roomStep(), currRoom.cooldown * 1000);
             }
             let pathRoom = foundPath[trackIndex];
 
-            console.log('end-- pathroom', pathRoom, previous)
+            // console.log('end-- pathroom', pathRoom, previous)
 
             for (let way in visited[previous]['exits']) {
-                console.log('end-- way', way)
+                // console.log('end-- way', way)
                 if (visited[previous]['exits'][way] == pathRoom) {
                     console.log('way-- selected', way, visited[previous]['exits'])
-                    console.log('currentroomReturn', currRoom)
+                    // console.log('currentroomReturn', currRoom)
                     currRoom = await playerTravel(way)
                     let pathRoomId = currRoom.room_id
-                    console.log('currentroomReturn2', pathRoomId, currRoom)
+                    // console.log('currentroomReturn2', pathRoomId, currRoom)
                     break;
                 }
             }
-            console.log('pathroom', pathRoom)
+            // console.log('pathroom', pathRoom)
             previous = pathRoom;
             trackIndex += 1
             setTimeout(() => { backTrack() }, currRoom.cooldown * 1000);
